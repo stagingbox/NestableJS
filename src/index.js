@@ -116,6 +116,10 @@ export default class Nestable extends Emitter {
 
             this.initialised = true;
 
+            if(this.config.json) {
+                this.load(this.config.json);
+            }
+
             if (this.config.data) {
                 const req = new XMLHttpRequest();
                 req.responseType = 'json';
@@ -138,6 +142,8 @@ export default class Nestable extends Emitter {
         const nest = (item) => {
             const el = document.createElement(this.config.nodes.item);
             el.textContent = item.content;
+            el.setAttribute("data-name", item.content);
+            
 
             if (item.children) {
                 const list = document.createElement(this.config.nodes.list);

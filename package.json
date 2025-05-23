@@ -4,11 +4,13 @@
   "description": "NestableJS is a javascript library for creating drag & drop heirarchical lists.",
   "main": "dist/nestable.js",
   "scripts": {
-    "test": "karma start --single-run --reporters=progress"
+    "test": "karma start --single-run --reporters=progress",
+    "build": "rollup -c",
+    "build:watch": "rollup -c -w"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Mobius1/NestableJS.git"
+    "url": "git+https://github.com/stagingbox/NestableJS.git"
   },
   "keywords": [
     "nestable",
@@ -19,16 +21,21 @@
   "author": "Karl Saunders",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Mobius1/NestableJS/issues"
+    "url": "https://github.com/stagingbox/NestableJS/issues"
   },
-  "homepage": "https://github.com/Mobius1/NestableJS#readme",
+  "homepage": "https://github.com/stagingbox/NestableJS#readme",
   "devDependencies": {
+    "@babel/cli": "^7.27.2",
+    "@babel/core": "^7.27.1",
+    "@babel/preset-env": "^7.27.2",
     "jasmine": "^3.0.0",
-    "karma": "^2.0.0",
+    "karma": "^6.4.4",
     "karma-chrome-launcher": "^2.2.0",
     "karma-coverage": "^1.1.1",
     "karma-firefox-launcher": "^1.1.0",
-    "karma-jasmine": "^1.1.1"
+    "karma-jasmine": "^1.1.1",
+    "rollup": "^2.79.2",
+    "rollup-plugin-babel": "^4.4.0"
   },
   "directories": {
     "doc": "docs"
