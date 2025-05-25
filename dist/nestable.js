@@ -391,6 +391,24 @@
           var el = document.createElement(_this3.config.nodes.item);
           el.textContent = item.content;
           el.setAttribute("data-name", item.content);
+          if (item.hasOwnProperty('id') && item.id != null) {
+            el.setAttribute("data-id", item.id);
+          }
+          if (item.hasOwnProperty('url') && item.url != null) {
+            el.setAttribute("data-url", item.url);
+          }
+          if (item.hasOwnProperty('visible') && item.visible != null) {
+            el.setAttribute("data-visibile", item.visible);
+          }
+          /*
+          if (item.hasOwnProperty('parent') && item.parent != null) {
+              el.setAttribute("data-parent", item.parent);
+          }
+          if (item.hasOwnProperty('position') && item.position != null) {
+              el.setAttribute("data-position", item.position);
+          }
+          */
+
           if (item.children) {
             var list = document.createElement(_this3.config.nodes.list);
             el.appendChild(list);
@@ -539,6 +557,41 @@
       key: "serialize",
       value: function serialize() {
         return this._getData("data");
+      }
+    }, {
+      key: "json",
+      value: function json() {
+        // Convert the structure from this._getData() to a JSON-friendly format
+        function traverseData(data) {
+          var _this5 = this;
+          return data.map(function (item) {
+            var result = {};
+
+            // If includeContent is enabled, use the content, otherwise use data-name or data-id
+            if (item.data) {
+              /*
+              if (this.config.includeContent && item.content) {
+                  result.content = item.content;
+              } else if (item.data.name) {
+                  result.content = item.data.name;
+              } else if (item.data.id) {
+                  result.id = item.data.id;
+              }
+              */
+              result.name = item.data.name || null;
+              result.id = item.data.id || null;
+              result.url = item.data.url || null;
+              result.visible = item.data.visible || null;
+              // Copy all dataset properties
+              Object.assign(result, item.data);
+            }
+            if (item.children && item.children.length) {
+              result.children = traverseData.call(_this5, item.children);
+            }
+            return result;
+          });
+        }
+        return traverseData.call(this, this._getData("data"));
       }
     }, {
       key: "collapseAll",
@@ -1220,26 +1273,26 @@
     }, {
       key: "_getData",
       value: function _getData() {
-        var _this5 = this;
+        var _this6 = this;
         var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "nodes";
         var data = [];
         var _step0 = function step(level) {
           var array = [];
-          var items = DOM.children(level, _this5.config.nodes.item);
+          var items = DOM.children(level, _this6.config.nodes.item);
           items.forEach(function (li) {
             var item = {};
             if (type === "nodes") {
               item.node = li;
             } else {
               item.data = Object.assign({}, li.dataset);
-              if (_this5.config.includeContent) {
-                var content = li.querySelector(".".concat(_this5.config.classes.content));
+              if (_this6.config.includeContent) {
+                var content = li.querySelector(".".concat(_this6.config.classes.content));
                 if (content) {
                   item.content = content.innerHTML;
                 }
               }
             }
-            var sub = li.querySelector(_this5.config.nodes.list);
+            var sub = li.querySelector(_this6.config.nodes.list);
             if (sub) {
               item.children = _step0(sub);
             }
